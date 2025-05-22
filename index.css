@@ -1,0 +1,242 @@
+@font-face {
+	font-family: pixel;
+	src: url("./assets/arcadeclassic.regular.ttf");
+}
+
+body {
+	/* filter: blur(0.9px) brightness(1.2); */
+	background-color: #000000; /* #070707; */
+	color: #90f8c8;
+}
+
+body::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none; /* Ensure it doesn't block interactions */
+	background: repeating-linear-gradient(
+		rgba(0, 0, 0, 0.116) 0px,
+		rgba(0, 0, 0, 0.2) 4px,
+		rgba(255, 255, 255, 0) 4px,
+		rgba(255, 255, 255, 0) 8px
+	);
+	z-index: 100; /* Ensure it overlays the content */
+	mix-blend-mode: multiply; /* Blend with the background */
+	opacity: 0.5; /* Adjust visibility of the effect */
+	z-index: 100;
+	mix-blend-mode: multiply; /* Blend with the background */
+	opacity: 0.5; /* Adjust visibility of the effect */
+	animation: scanlines 0.1s linear infinite; /* Add animation */
+}
+
+@keyframes scanlines {
+	0% {
+		background-position: 0 0;
+	}
+	100% {
+		background-position: 0 8px; /* Adjust for smooth scrolling */
+	}
+}
+
+.container {
+	display: grid;
+	grid-template-columns: 0.8fr 1.5fr 0.8fr;
+	/* changed from 1.5 */
+	grid-template-rows: 1fr;
+	gap: 0px 0px;
+
+	font-family: pixel;
+
+	height: 50vh;
+	/* margin-top: 20%; */
+	margin-top: 10vw;
+	width: 80vw;
+	/* changed from 70 */
+	margin-left: auto;
+	margin-right: auto;
+	border-style: solid;
+	border-color: #101818;
+}
+
+#radioContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	grid-column: 2;
+	/* might need to add absolute */
+}
+
+#radioContainer #top {
+	align-self: center;
+	margin: -3.4px 0 0 0;
+	/* position relative + bottom 10px */
+	/* border: 10px solid #b74e4e;
+	box-sizing: border-box; */
+	z-index: 1;
+	outline: 10px solid #000000;
+	background-color: #101818;
+	padding: 0.1em 2em;
+	font-size: 2.5rem;
+}
+
+#radioContainer #bottom {
+	align-self: center;
+	margin: 0px 0 -3.4px 0;
+	/* position relative + bottom 10px */
+	/* border: 10px solid #b74e4e;
+	box-sizing: border-box; */
+	outline: 10px solid #000000;
+	background-color: #101818;
+	padding: 0.1em 2em;
+	color: #284038;
+	font-size: 2.3rem;
+}
+
+#interface {
+	border-top: 3px solid #101818;
+	border-bottom: 3px solid #101818;
+	/* width: 100%; This makes the buttons stick out */
+	height: 100%;
+	/* z-index: -1;  */
+	/* not sure why I had that */
+
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+
+#leftbtn {
+	cursor: pointer;
+	background-color: #101818;
+	padding: 0.3em 1.9em;
+}
+
+#rightbtn {
+	cursor: pointer;
+	transform: scale(-1, -1);
+	background-color: #101818;
+	padding: 0.3em 1.9em;
+}
+
+/*
+#controls {
+	background-color: grey;
+	/* can probably delete width/height later *d/
+	width: 70%;
+	height: 50%;
+	margin: 0 2em;
+	border-top: 3px solid #203028;
+	border-bottom: 3px solid #284038;
+}*/
+#controls {
+	position: relative; /* Required for pseudo-elements */
+	background-color: rgb(16 24 24);
+	/* width: 70%; */
+	height: 50%;
+	margin: 0 2em;
+}
+
+#controls::before,
+#controls::after {
+	content: "";
+	position: absolute;
+	left: -10px; /* Extend beyond the left */
+	right: -10px; /* Extend beyond the right */
+	height: 3px;
+	background-color: #203028;
+}
+
+#controls::before {
+	top: 0; /* Top border */
+	background-color: #203028;
+}
+
+#controls::after {
+	bottom: 0; /* Bottom border */
+	background-color: #284038;
+}
+
+.volume {
+	height: 100%;
+}
+
+.frequency {
+	position: absolute;
+	/* transform-origin: center; */
+	bottom: 0;
+	right: 0;
+	/* height: inherit */
+	/* filter: contrast(0.9); */
+	width: 69%;
+}
+
+/*  */
+/*  */
+/*  */
+/* profiles */
+
+#snake {
+	grid-column: 3;
+
+	/* display: none; */
+	/* position: absolute;
+	width: 205px;
+	height: 325px; */
+
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	height: inherit;
+	width: 20vw;
+	/* EXPERIMENT - change width to auto*/
+	width: auto;
+}
+
+#naomi {
+	grid-column: 1;
+	grid-row: 1;
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+	height: inherit;
+	width: 20vw;
+}
+
+.imgGlow {
+	display: none;
+	box-shadow: inset 0 0 6px 1px #67a4801c;
+	position: absolute;
+	width: 205px;
+	height: 325px;
+	z-index: 1;
+	height: 308px;
+	width: 188px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.picture {
+	max-width: 100%;
+	max-height: 95%;
+	width: 90%; /* so there white space to the side*/
+	image-rendering: pixelated;
+	object-fit: contain;
+
+	/* position: absolute;
+    width: 13%; */
+}
+
+.borderimg {
+	display: none;
+	position: absolute;
+	width: inherit;
+	margin-left: -10px;
+}
