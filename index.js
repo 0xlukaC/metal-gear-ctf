@@ -30,3 +30,31 @@ function fakeVolume() {
 
 // Run every 100ms
 setInterval(fakeVolume, 70);
+
+const text = [
+	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+	"Another message here.",
+	"Final message."
+];
+
+const display = document.getElementById("captions");
+let textIndex = 0;
+
+function writeText() {
+	const words = text[textIndex].split(" ");
+	let wordIndex = 0;
+	display.textContent = "";
+
+	const interval = setInterval(() => {
+		if (wordIndex < words.length) {
+			display.textContent += words[wordIndex] + " ";
+			wordIndex++;
+		} else {
+			clearInterval(interval);
+			textIndex = (textIndex + 1) % text.length;
+			setTimeout(writeText, 1000); // wait 1s before next line
+		}
+	}, 275);
+}
+
+writeText();
