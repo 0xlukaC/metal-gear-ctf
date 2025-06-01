@@ -29,6 +29,7 @@ topology:
             kind: linux
             image: alpine:latest
             binds:
+                - ./config/servers/frontend:/frontend
                 - ./config/servers/web1.c:/config/web1.c
                 - ./config/servers/webserver.h:/config/webserver.h
                 - ./config/servers/config.web1.sh:/config/config.web.sh
@@ -40,6 +41,7 @@ topology:
             kind: linux
             image: alpine:latest
             binds:
+                - ./config/servers/frontend:/frontend
                 - ./config/servers/web1.c:/config/web1.c
                 - ./config/servers/webserver.h:/config/webserver.h
                 - ./config/servers/config.web2.sh:/config/config.web.sh

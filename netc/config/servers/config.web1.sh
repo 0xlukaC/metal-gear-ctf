@@ -2,7 +2,6 @@
 set -eux
 sleep 1 # due to race condition, this will run before switch
 
-
 ip addr add 10.10.10.11/24 dev eth1
 ip link set eth1 up
 apk add gcc musl-dev iproute2

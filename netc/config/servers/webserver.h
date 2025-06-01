@@ -372,6 +372,7 @@ void addStaticFiles(char *filepath) {
   strcpy(refinedPath + 1, filepath + length);
   if (filepath[refinedLen - 3] != '/') strcat(refinedPath, "/");
   strcat(refinedPath, "*");
+  printf("Refined path: %s\n", refinedPath);
   addRoute(refinedPath, NULL, staticGet, GET);
   free(refinedPath);
 }
