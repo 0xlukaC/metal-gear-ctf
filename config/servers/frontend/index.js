@@ -31,11 +31,19 @@ function fakeVolume() {
 // Run every 100ms
 setInterval(fakeVolume, 70);
 
-const text = [
-	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-	"Another message here.",
-	"Final message."
-];
+// let text = [
+// 	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+// 	"Another message here.",
+// 	"Final message."
+// ];
+let text = [];
+fetch("/text")
+	.then((response) => response.text())
+	.then((data) => {
+		text = data.split("\n").filter((line) => line.trim() !== "");
+		writeText();
+	})
+	.catch((error) => console.error("Error fetching text:", error));
 
 const display = document.getElementById("captions");
 let textIndex = 0;
@@ -54,7 +62,5 @@ function writeText() {
 			textIndex = (textIndex + 1) % text.length;
 			setTimeout(writeText, 1000); // wait 1s before next line
 		}
-	}, 275);
+	}, 300);
 }
-
-writeText();

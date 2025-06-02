@@ -461,7 +461,8 @@ char *status_message(int code) {
   for (size_t i = 0; i < sizeof(status_map) / sizeof(status_map[0]); i++)
     if (status_map[i].code == code) return status_map[i].message;
 
-  return "500 Internal Server Error"; // Default if status code is not found
+  // return "500 Internal Server Error"; // Default if status code is not found
+  return "200 OK"; // woops
 }
 
 /* Loads content of a file to a string.*/
@@ -621,7 +622,7 @@ void SendData(int client, char *data, char *contentType, int statusCode,
   int heap = 0;
   if (header == NULL) {
     header = malloc(sizeof(char) * 128);
-    headerBuilder(contentType, (statusCode == 404), header, 128, *size);
+    headerBuilder(contentType, statusCode, header, 128, *size);
     heap = 1;
   }
   if (statusCode == 404)
