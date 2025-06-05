@@ -49,6 +49,18 @@ topology:
             # Installs nginx and runs it in the foreground to keep the container alive
             cmd: sh /config/config.web.sh
 
+        web3:
+            kind: linux
+            image: alpine:latest
+            binds:
+                - ./config/servers/frontend:/frontend
+                - ./config/servers/web1.c:/config/web1.c
+                - ./config/servers/webserver.h:/config/webserver.h
+                - ./config/servers/config.web3.sh:/config/config.web.sh
+
+            # Installs nginx and runs it in the foreground to keep the container alive
+            cmd: sh /config/config.web.sh
+
         loadbalancer:
             kind: linux
             image: alpine:latest
@@ -64,3 +76,4 @@ topology:
         - endpoints: ["switch:eth2", "web1:eth1"]
         - endpoints: ["switch:eth3", "web2:eth1"]
         - endpoints: ["switch:eth4", "loadbalancer:eth1"]
+        - endpoints: ["switch:eth5", "web3:eth1"]

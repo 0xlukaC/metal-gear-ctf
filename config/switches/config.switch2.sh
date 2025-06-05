@@ -55,7 +55,7 @@ ip link add name br0 type bridge
 #     ip link set "$iface" up
 #     ip link set "$iface" master br0
 # done
-for iface in eth1 eth2 eth3 eth4; do
+for iface in eth1 eth2 eth3 eth4 eth5; do
     if ip link show "$iface" > /dev/null 2>&1; then
         echo "Adding $iface to bridge br0"
         ip link set "$iface" up
