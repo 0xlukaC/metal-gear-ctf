@@ -491,15 +491,18 @@ char *loadFileToString(const char *filePath) {
 
 /* Constructs a header.*/
 char *headerBuilder(char *ext, int statusCode, char *header, int size,
-                    size_t fileSize) {
+                    char *othermsg, size_t fileSize) {
   char *mime = mimes(ext);
+  if (othermsg == NULL) othermsg = "";
+  printf("msg: %s\n", othermsg);
   char *statusString = status_message(statusCode);
   snprintf(header, size,
            "HTTP/1.1 %s\r\n"
            "Content-Type: %s\r\n"
            "Content-Length: %zu\r\n"
+           "%s" // manually add \r\n
            "Connection: keep-alive\r\n\r\n",
-           statusString, mime, fileSize);
+           statusString, mime, fileSize, othermsg);
 
   return header;
 }
@@ -541,7 +544,7 @@ void SendFile(int client, const char *filePath, char *fileType, int statusCode,
     }
     header = malloc(512);
     heap = 1;
-    headerBuilder(fileType, statusCode, header, 512, size);
+    headerBuilder(fileType, statusCode, header, 512, NULL, size);
   }
   if (page404 && (!filePath || statusCode == 404)) filePath = page404;
 
@@ -622,7 +625,7 @@ void SendData(int client, char *data, char *contentType, int statusCode,
   int heap = 0;
   if (header == NULL) {
     header = malloc(sizeof(char) * 128);
-    headerBuilder(contentType, statusCode, header, 128, *size);
+    headerBuilder(contentType, statusCode, header, 128, NULL, *size);
     heap = 1;
   }
   if (statusCode == 404)
