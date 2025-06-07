@@ -71,9 +71,17 @@ topology:
             ports:
                 - 8080:80 # Expose port 80 of the load balancer to port 8080 on the host
 
+        protected_pc:
+            kind: linux
+            image: alpine:latest
+            binds:
+                - ./config/servers/config.ppc.sh:/protected_pc.sh
+            cmd: sh /protected_pc.sh 10.10.10.15 24
+
     links:
         - endpoints: ["router:eth1", "switch:eth1"]
         - endpoints: ["switch:eth2", "web1:eth1"]
         - endpoints: ["switch:eth3", "web2:eth1"]
         - endpoints: ["switch:eth4", "loadbalancer:eth1"]
         - endpoints: ["switch:eth5", "web3:eth1"]
+        - endpoints: [switch:eth6, protected_pc:eth1]

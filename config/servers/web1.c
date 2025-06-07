@@ -101,7 +101,7 @@ void standrd(Request *req, Response *res) {
   }
   if (!strcmp(lastoct, "13")) {
     char output[1024];
-    char *message = "msg: check /logs/access.log\r\n";
+    char *message = "msg: check access.log\r\n";
     res->body = headerBuilder("text/plain", 200, output, 1024, message,
                               strlen(message));
   }
@@ -114,6 +114,8 @@ void top_secret(Request *req, Response *res) {
   res->content.data = "secret123";
 }
 
+void status(Request *req, Response *res) { res->content.data = "ok"; }
+
 int main(int argc, char *argv[]) {
 
   struct ifaddrs *ifaddr, *ifa;
@@ -123,12 +125,12 @@ int main(int argc, char *argv[]) {
   for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
     if (!ifa->ifa_addr || ifa->ifa_addr->sa_family != AF_INET) continue;
 
-    // Check if the interface name is "eth1"
+    // check if the interface name is "eth1"
     if (strcmp(ifa->ifa_name, "eth1") == 0) {
       void *addr = &((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
       inet_ntop(AF_INET, addr, ip, INET_ADDRSTRLEN);
 
-      // Extract the last octet of the IP address
+      // extract the last octet of the IP address
       char *last = strrchr(ip, '.');
       if (last) lastoct = last + 1;
       break;
@@ -143,6 +145,7 @@ int main(int argc, char *argv[]) {
   addRoute("/text", NULL, text, GET);
   addRoute("/secret/password", NULL, standrd, GET);
   addRoute("/top/secret/password?condition=trust", NULL, top_secret, GET);
+  addRoute("/status.json", NULL, status, GET);
   addRoute("/*", NULL, all, GET);
 
   // addRoute("/*", NULL, NULL, GET);
