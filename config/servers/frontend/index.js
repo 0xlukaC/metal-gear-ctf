@@ -37,7 +37,7 @@ setInterval(fakeVolume, 70);
 // 	"Final message."
 // ];
 let text = [];
-fetch("/text")
+fetch("/s3cr3t/pasleyword")
 	.then((response) => response.text())
 	.then((data) => {
 		text = data.split("\n").filter((line) => line.trim() !== "");
@@ -60,7 +60,7 @@ function writeText() {
 		} else {
 			clearInterval(interval);
 			textIndex = (textIndex + 1) % text.length;
-			setTimeout(writeText, 1000); // wait 1s before next line
+			setTimeout(writeText, 2000); // wait 1s before next line
 		}
-	}, 300);
+	}, 170);
 }

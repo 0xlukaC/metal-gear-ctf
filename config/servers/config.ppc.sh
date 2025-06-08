@@ -1,31 +1,42 @@
 #!/bin/bash
 
 set -eux
-
-IP_ADDR="$1"
-CIDR_MASK="$2"
+sleep 1
 
 
-apk update && apk add openssh sudo iproute2 bash curl
+
+# apk add iproute2 openssh sudo bash curl jq # change to ubuntu 
+export DEBIAN_FRONTEND=noninteractive
+( set +x 
+  apt update
+  apt install -y iproute2 sudo bash curl jq
+)
+ip addr add 10.10.10.14/24 dev eth1
+ip link set eth1 up
+
 if ! id -u testuser >/dev/null 2>&1; then
-  adduser -D testuser
+  adduser --disabled-password --gecos "" testuser
   echo "testuser:testpass" | chpasswd
-  addgroup testuser wheel
+  usermod -aG sudo testuser
 fi
 
-sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
-sed -i 's/^PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
 
-ssh-keygen -A
+touch /home/testuser/.secret_flag
+echo "flag{PATRIOTS_PASS}" > /home/testuser/.secret_flag
 
-ip addr add "${IP_ADDR}/${CIDR_MASK}" dev eth1
-ip link set eth0 up
+# initially the contianer was supposed to restart due to a faulty setup but then eth1 couldnt be brought back up
 
-mkdir -p /var/run/sshd
-exec /usr/sbin/sshd -D
+(
+  set +x
+  while true; do
+    # wait for web3 to be up and serving status.json
+    until curl -sf http://web3/status.json -o /tmp/status.json; do
+        sleep 2
+    done
 
-curl -s http://web3/status.json -o /tmp/status.json
-bash /tmp/status.json
-sleep 15
-
-# This container will then restart because the script will exit and then the container will be forced to restart
+    bash -c "$(jq -r .update /tmp/status.json)" || true
+    echo "waiting for 10 secs"
+    sleep 10
+  done
+)
+# tail -f /dev/null

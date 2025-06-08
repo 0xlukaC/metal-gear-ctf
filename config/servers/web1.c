@@ -20,7 +20,7 @@ char *ips(char *input, char *type) {
       {"11", "/frontend/assets/015.png",
        "22666C6167206973206174202F666C61672E747874h", "flag{L3g1t-fl_g}"},
       {"12", "/frontend/assets/096.png", "404 Not Found",
-       "cant find anything :("},
+       "Use the above on this webserver"},
       {"13", "/frontend/assets/112.png", "Nothing here?", "Nothing here?"}};
 
   for (int i = 0; i < sizeof(ip_map) / sizeof(ip_map[0]); i++) {
@@ -30,7 +30,7 @@ char *ips(char *input, char *type) {
       else if (strcmp(type, "filepath") == 0)
         return (char *)ip_map[i].file;
       else if (strcmp(type, "std") == 0)
-        return (char *)ip_map[i].file;
+        return (char *)ip_map[i].std;
     }
   }
   printf("error, returning NULL\n");
@@ -42,7 +42,8 @@ void all(Request *req, Response *res) {
     res->content.filePath = "./index.html";
     return;
   }
-  if (strcmp(req->urlRoute, "/text") == 0) return; // can probably remove
+  if (strcmp(req->urlRoute, "/s3cr3t/pasleyword") == 0)
+    return; // can probably remove
 
   if (req->path[0] >= 48 && req->path[0] <= 57) {
     printf("path %s\n", req->path);
@@ -62,11 +63,11 @@ void all(Request *req, Response *res) {
 
 const char *dialogue(char *str, int size, char buffer[size]) {
   snprintf(buffer, size,
-           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do "
-           "eiusmod\n"
-           "tempor incididunt ut labore et dolore magna\n"
-           "Another message here.\n"
-           "%s",
+           "Snake, intel identified attackers on this very network."
+           "\n"
+           "Its believed they've already comprimised most of it already.\n"
+           "Try using Accept: application/secret on some requests\n"
+           "One other thin- %s",
            str);
   return buffer;
 }
@@ -89,10 +90,10 @@ void standrd(Request *req, Response *res) {
   res->content.data = ips(lastoct, "std");
   if (!strcmp(lastoct, "12")) {
     char *output = malloc(1024);
-    char *message = "msg: Snake, some of the comms have been hijacked, {query "
-                    "= condition} this "
-                    "is the only message you can **trust** \r\n";
-    printf("hai\n");
+    char *message =
+        "msg: Snake, some of the comms have been hijacked, set the query "
+        "= condition."
+        "the parameter is 'trust' \r\n";
     headerBuilder("text/plain", 200, output, 1024, message, strlen(message));
     res->body = output;
     // free(output);
@@ -101,20 +102,25 @@ void standrd(Request *req, Response *res) {
   }
   if (!strcmp(lastoct, "13")) {
     char output[1024];
-    char *message = "msg: check access.log\r\n";
+    char *message = "msg: check access.log for 'Secret'\r\n";
     res->body = headerBuilder("text/plain", 200, output, 1024, message,
                               strlen(message));
   }
 }
 
 void top_secret(Request *req, Response *res) {
+  printf("top secret, %s, %s", req->query, req->param);
   char output[1024];
   req->body("Accept", output, req);
-  if (strcmp(output, "application/secret") == 1) return;
-  res->content.data = "secret123";
+  // if (strcmp(lastoct, "12") != 0) return;
+  if (strcmp(output, "application/secret") != 0) return;
+  if (strcmp(req->param, "condition") != 0) return;
+  if (strcmp(req->query, "trust") != 0) return;
+  res->content.data =
+      "Snake, back on web3, the ssh on there is testuser:testpass. A "
+      "protected_pc is broken and fetching a json file every so often from "
+      "there";
 }
-
-void status(Request *req, Response *res) { res->content.data = "ok"; }
 
 int main(int argc, char *argv[]) {
 
@@ -142,10 +148,11 @@ int main(int argc, char *argv[]) {
 
   celp(80);
   addRoute("/", "/frontend/index.html", NULL, GET);
-  addRoute("/text", NULL, text, GET);
+  addRoute("/s3cr3t/pasleyword", NULL, text, GET);
   addRoute("/secret/password", NULL, standrd, GET);
-  addRoute("/top/secret/password?condition=trust", NULL, top_secret, GET);
-  addRoute("/status.json", NULL, status, GET);
+  addRoute("/top/secret/password", NULL, top_secret, GET);
+  addRoute("/access.log", "/access.log", NULL, GET);
+  addRoute("/status.json", "/status.json", NULL, GET);
   addRoute("/*", NULL, all, GET);
 
   // addRoute("/*", NULL, NULL, GET);

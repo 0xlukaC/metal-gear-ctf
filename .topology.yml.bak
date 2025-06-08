@@ -61,6 +61,13 @@ topology:
             # Installs nginx and runs it in the foreground to keep the container alive
             cmd: sh /config/config.web.sh
 
+        protected_pc:
+            kind: linux
+            image: ubuntu:20.04
+            binds:
+                - ./config/servers/config.ppc.sh:/protected_pc.sh
+            cmd: sh /protected_pc.sh
+
         loadbalancer:
             kind: linux
             image: alpine:latest
@@ -77,3 +84,4 @@ topology:
         - endpoints: ["switch:eth3", "web2:eth1"]
         - endpoints: ["switch:eth4", "loadbalancer:eth1"]
         - endpoints: ["switch:eth5", "web3:eth1"]
+        - endpoints: ["switch:eth6", "protected_pc:eth1"]
