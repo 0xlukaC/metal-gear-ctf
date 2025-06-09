@@ -30,6 +30,9 @@ sudo containerlab destroy --topo topology.yml
 
 <br>
 
+> [!IMPORTANT]
+> the loadbalancer is exposed on port 8080. Depending on if your running this inside a VM or wsl, you may have to use the ip of that followed by :8080
+
 > [!NOTE]
 > It may take a while to load and you may recieve 503 errors for the first 20 seconds depending on your internet and pc
 
