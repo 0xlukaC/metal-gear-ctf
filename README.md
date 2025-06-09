@@ -1,5 +1,9 @@
 # Metal Gear Solid CTF Challenge
 
+<p align="center">
+  <img style="width: 50%;" src="https://github.com/user-attachments/assets/d4d2d537-c7ff-4a13-ad0b-1d2f1ce057c9"></img>
+</p>
+
 ## Difficulty rating 
 ![stars](https://starrating-beta.vercel.app/3/) *100 points*
 \
