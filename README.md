@@ -74,6 +74,8 @@ flag{PATRIOT_PASS}
 ## How to solve
 This video has audio and is in 1.5x speed
 
+If you prefer, follow this [markdown file](https://github.com/0xlukaC/metal-gear-ctf/blob/main/Walkthrough.md)
+
 https://github.com/user-attachments/assets/14aa9844-b534-4b56-a318-14a6dd87ef13
 
 
