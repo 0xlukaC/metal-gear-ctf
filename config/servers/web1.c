@@ -20,7 +20,7 @@ char *ips(char *input, char *type) {
       {"11", "/frontend/assets/015.png",
        "22666C6167206973206174202F666C61672E747874h", "flag{L3g1t-fl_g}"},
       {"12", "/frontend/assets/096.png", "404 Not Found",
-       "Use the above on this webserver"},
+       "in this request, look above"},
       {"13", "/frontend/assets/112.png", "Nothing here?", "Nothing here?"}};
 
   for (int i = 0; i < sizeof(ip_map) / sizeof(ip_map[0]); i++) {

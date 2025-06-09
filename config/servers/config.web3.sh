@@ -57,5 +57,9 @@ ls /config
 chmod +x /config/exec
 /usr/sbin/sshd -D &
 /config/exec
+# while true; do
+#     /config/exec || echo "webserver crashed, restarting..."
+#     sleep 1
+# done
 
 # # tail -f /dev/null
