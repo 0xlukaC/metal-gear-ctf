@@ -54,6 +54,7 @@ function writeText() {
 	display.textContent = "";
 
 	const interval = setInterval(() => {
+		// this interval runs every 170ms to simulate typing effect
 		if (wordIndex < words.length) {
 			display.textContent += words[wordIndex] + " ";
 			wordIndex++;

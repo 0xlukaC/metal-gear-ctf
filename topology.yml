@@ -9,11 +9,7 @@ topology:
                 - ./config/routers/init.sh:/config/init.sh
                 - ./config/routers/frr.conf:/etc/frr/frr.conf
             exec:
-                #- sh /config/init.sh
                 - /usr/lib/frr/frrinit.sh start
-            # binds:
-            #       - ./routers/frr.conf:/etc/frr/frr.conf
-            # cmd: /usr/lib/frr/docker-start.sh
 
         switch:
             kind: linux
@@ -21,9 +17,6 @@ topology:
             binds:
                 - ./config/switches:/etc/frr
             cmd: sh /etc/frr/config.switch2.sh
-            # binds:
-            #     - ./switches:/etc/frr
-            # cmd: sh /etc/frr/config.switch.sh
 
         web1:
             kind: linux
@@ -33,8 +26,6 @@ topology:
                 - ./config/servers/web1.c:/config/web1.c
                 - ./config/servers/webserver.h:/config/webserver.h
                 - ./config/servers/config.web1.sh:/config/config.web.sh
-
-            # installs nginx and runs it in the foreground to keep the container alive
             cmd: sh /config/config.web.sh # sh -c "apk add nginx && sh /config/config.web.sh"
 
         web2:
@@ -45,8 +36,6 @@ topology:
                 - ./config/servers/web1.c:/config/web1.c
                 - ./config/servers/webserver.h:/config/webserver.h
                 - ./config/servers/config.web2.sh:/config/config.web.sh
-
-            # Installs nginx and runs it in the foreground to keep the container alive
             cmd: sh /config/config.web.sh
 
         web3:
@@ -57,8 +46,6 @@ topology:
                 - ./config/servers/web1.c:/config/web1.c
                 - ./config/servers/webserver.h:/config/webserver.h
                 - ./config/servers/config.web3.sh:/config/config.web.sh
-
-            # Installs nginx and runs it in the foreground to keep the container alive
             cmd: sh /config/config.web.sh
 
         protected_pc:
@@ -72,11 +59,11 @@ topology:
             kind: linux
             image: alpine:latest
             binds:
-                - ./config/servers/haproxy.cfg:/etc/haproxy/haproxy.cfg # ./config/servers/loadbalancer
+                - ./config/servers/haproxy.cfg:/etc/haproxy/haproxy.cfg
                 - ./config/servers/start-haproxy.sh:/start-haproxy.sh
             cmd: sh /start-haproxy.sh
             ports:
-                - 8080:80 # Expose port 80 of the load balancer to port 8080 on the host
+                - 8080:80 # expose port 80 of the load balancer to port 8080 on the host
 
     links:
         - endpoints: ["router:eth1", "switch:eth1"]

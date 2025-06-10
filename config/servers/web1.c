@@ -16,6 +16,7 @@ struct entries {
 char *ips(char *input, char *type) {
   if (input == NULL) fprintf(stdout, "nothing passed into mapip");
 
+  // Map of IP addresses to file paths and secrets 
   static const struct entries ip_map[] = {
       {"11", "/frontend/assets/015.png",
        "22666C6167206973206174202F666C61672E747874h", "flag{L3g1t-fl_g}"},
@@ -37,6 +38,7 @@ char *ips(char *input, char *type) {
   return NULL;
 }
 
+// handles the /* path
 void all(Request *req, Response *res) {
   if (strcmp(req->urlRoute, "/") == 0) {
     res->content.filePath = "./index.html";
@@ -45,7 +47,7 @@ void all(Request *req, Response *res) {
   if (strcmp(req->urlRoute, "/s3cr3t/pasleyword") == 0)
     return; // can probably remove
 
-  if (req->path[0] >= 48 && req->path[0] <= 57) {
+  if (req->path[0] >= 48 && req->path[0] <= 57) { // for the radio images path because they start with a number
     printf("path %s\n", req->path);
     char *filepath = ips(lastoct, "filepath");
     printf("new filepath: %s\n", filepath);
@@ -57,10 +59,12 @@ void all(Request *req, Response *res) {
   snprintf(buffer, sizeof(buffer), "/frontend/%s", req->urlRoute);
   /*printf("%s\n", buffer);*/
   res->content.filePath = buffer;
+  // returns: 
   // /frontend//index.js
   // /frontend//assets/vol0.png
 }
 
+// function to format dialogue
 const char *dialogue(char *str, int size, char buffer[size]) {
   snprintf(buffer, size,
            "Snake, intel identified attackers on this very network."

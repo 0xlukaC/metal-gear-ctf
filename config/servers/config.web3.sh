@@ -8,9 +8,9 @@ apk add -q gcc musl-dev iproute2 findutils
 apk add openssh sudo bash
 
 if ! id -u testuser >/dev/null 2>&1; then
-  adduser -D testuser
+  adduser -D testuser # -D is for no password
   echo "testuser:testpass" | chpasswd
-  addgroup testuser wheel
+  addgroup testuser wheel # add to wheel group for sudo access
 fi
 
 sed -i 's/^#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config
@@ -40,9 +40,10 @@ mkdir -p /var/run/sshd
         fi
     done
 )
+# create the status.json file
 
 touch /status.json
-chmod 666 /status.json
+chmod 666 /status.json # r+w but not x for all users
 cat > /status.json <<EOF
 {
   "update": "echo all good on this end boss",
@@ -57,7 +58,7 @@ ls /config
 chmod +x /config/exec
 /usr/sbin/sshd -D &
 /config/exec
-# while true; do
+# while true; do # this will redeploy the webserver if it crashes
 #     /config/exec || echo "webserver crashed, restarting..."
 #     sleep 1
 # done
